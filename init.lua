@@ -958,3 +958,5 @@ vim.g.clipboard = {
         cache_enabled = true,
     }
 
+-- Better diff
+vim.opt.diffopt:append { 'algorithm:histogram' }
