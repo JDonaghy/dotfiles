@@ -1,6 +1,5 @@
-# Intro
+# Neovim
 Minimalist Neovim setup for C# development:
-- Based on kickstarter.nvim
 - Omnisharp LSP integration via Mason
 - C# debugging via `netcoredbg`
 
@@ -18,4 +17,14 @@ unzip DroidSansMono.zip -d ~/.fonts
 fc-cache -fv
 ```
 
+# Zshrc
+```
+# zodide
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
+# zsh-autosuggestions via oh-my-zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# powerlevel10k via oh-my-zsh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+```

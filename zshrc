@@ -5,7 +5,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+[[ -r ~/zsh/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git ~/zsh/zsh-snap/znap.zsh
 source ~/zsh/zsh-snap/znap.zsh
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -110,6 +114,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias n="nvim ."
 alias k="kubectl"
+alias kk="k9s -A"
+alias python="python3"
 alias kgc='k config get-contexts|grep "*"'
 #
 # Znap zsh packages
@@ -126,7 +132,15 @@ export KUBECONFIG="$HOME/.kube/config"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # DBus
-sudo /etc/init.d/dbus start &> /dev/null
+if [[ $(grep -i Microsoft /proc/version) ]]; then
+  sudo /etc/init.d/dbus start &> /dev/null
+fi
+
+# go
+export GOPATH=/usr/local/go
+export GOBIN=/usr/local/go/bin
+export PATH=$PATH:$GOPATH/bin
+# go end
 
 # pnpm
 export PNPM_HOME="/home/jdonaghy/.local/share/pnpm"
@@ -137,3 +151,5 @@ export KUBE_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
 
 # This needs to be the last line in order for zoxide to function correctly
 eval "$(zoxide init zsh)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+

@@ -1,49 +1,6 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-
-Kickstart.nvim is *not* a distribution.
-
-Kickstart.nvim is a template for your own configuration.
-  The goal is that you can read every line of code, top-to-bottom, understand
-  what your configuration is doing, and modify it to suit your needs.
-
-  Once you've done that, you should start exploring, configuring and tinkering to
-  explore Neovim!
-
-  If you don't know anything about Lua, I recommend taking some time to read through
-  a guide. One possible example:
-  - https://learnxinyminutes.com/docs/lua/
-
-  And then you can explore or search through `:help lua-guide`
-
-
-Kickstart Guide:
-
-I have left several `:help X` comments throughout the init.lua
-You should run that command and read that help section for more information.
-
-In addition, I have some `NOTE:` items throughout the file.
-These are for you, the reader to help understand what is happening. Feel free to delete
-them once you know what you're doing, but they should serve as a guide for when you
-are first encountering a few different constructs in your nvim config.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now :)
---]]
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Install package manager
---    https://github.com/folke/lazy.nvim
---    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -80,24 +37,29 @@ require('lazy').setup({
   { 'junegunn/gv.vim' },
   { 'nvim-lua/plenary.nvim' },
   { 'simrat39/rust-tools.nvim' },
-  { 'jreybert/vimagit' },
-  { 'tpope/vim-fugitive' }, -- vimmagit does not support pull/push yet
   { 'towolf/vim-helm' }, -- vim syntax for helm templates (yaml + gotmpl + sprig + custom)
   { 'PhilRunninger/bufselect',
       init = function()
         vim.api.nvim_set_keymap ('n', '<Space>bv', '<Cmd>ShowBufferList<CR>', { noremap = true, silent = true })
       end,
   },
+  {
+    "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
   { 'nvim-pack/nvim-spectre',
       config = function()
         require('spectre').setup()
-      end
-  },
-  { 'kosayoda/nvim-lightbulb',
-      config = function()
-        require("nvim-lightbulb").setup({
-          autocmd = { enabled = true }
-        })
       end
   },
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -125,21 +87,6 @@ require('lazy').setup({
       -- install jsregexp (optional!).
       --build = "make install_jsregexp"
   },
-  -- {
-  --   -- Autocompletion
-  --   'hrsh7th/nvim-cmp',
-  --   dependencies = {
-  --     -- Snippet Engine & its associated nvim-cmp source
-  --     'L3MON4D3/LuaSnip',
-  --     'saadparwaiz1/cmp_luasnip',
-  --
-  --     -- Adds LSP completion capabilities
-  --     'hrsh7th/cmp-nvim-lsp',
-  --
-  --     -- Adds a number of user-friendly snippets
-  --     'rafamadriz/friendly-snippets',
-  --   },
-  -- },
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
@@ -374,25 +321,6 @@ require('lazy').setup({
       set('n', '<Leader>tf', '<Cmd>FloatermToggle!<CR>')
     end,
   },
-  -- {
-  --  'kdheepak/lazygit.nvim',
-  --  cmd = {
-  --   'LazyGit',
-  --   'LazyGitConfig',
-  --   'LazyGitCurrentFile',
-  --   'LazyGitFilter',
-  --   'LazyGitFilterCurrentFile',
-  --  },
-  --  -- optional for floating window border decoration
-  --  dependencies = {
-  --   "nvim-lua/plenary.nvim",
-  --  },
-  --  -- setting the keybinding for LazyGit with 'keys' is recommended in
-  --  -- order to load the plugin when the command is run for the first time
-  --  keys = {
-  --   { "<leader>gg", "<cmd>LazyGit<cr>", desc = "Open lazy git" },
-  --  },
-  -- },
   {
   'rmagatti/auto-session',
     lazy = false,
@@ -945,18 +873,24 @@ vim.opt.spell = true
 vim.opt.spelllang = { "en_us" }
 vim.opt.spelllang = { "en_us" }
 
-vim.g.clipboard = {
-        name = "win32yank-wsl",
-        copy = {
-            ["+"] = "win32yank.exe -i --crlf",
-            ["*"] = "win32yank.exe -i --crlf",
-        },
-        paste = {
-            ["+"] = "win32yank.exe -o --lf",
-            ["*"] = "win32yank.exe -o --lf",
-        },
-        cache_enabled = true,
-    }
+vim.cmd('autocmd! Filetype go setlocal tabstop=4')
+
+_G.IS_WSL = OS == 'Linux' and uname.release:lower():find 'microsoft' and true or false
+
+if IS_WSL then
+  vim.g.clipboard = {
+          name = "win32yank-wsl",
+          copy = {
+              ["+"] = "win32yank.exe -i --crlf",
+              ["*"] = "win32yank.exe -i --crlf",
+          },
+          paste = {
+              ["+"] = "win32yank.exe -o --lf",
+              ["*"] = "win32yank.exe -o --lf",
+          },
+          cache_enabled = true,
+      }
+end
 
 -- Better diff
 vim.opt.diffopt:append { 'algorithm:histogram' }
