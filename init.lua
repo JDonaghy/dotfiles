@@ -892,3 +892,5 @@ if IS_WSL then
       }
 end
 
+-- Better diff
+vim.opt.diffopt:append { 'algorithm:histogram' }
