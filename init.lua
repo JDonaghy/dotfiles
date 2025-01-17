@@ -1,6 +1,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+_G.IS_WSL = vim.loop.os_uname().sysname and vim.fn.system('uname -a'):find 'WSL2'
+needGo = not _G.IS_WSL
+
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -50,12 +53,21 @@ require('lazy').setup({
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
+    enabled = needGo,
     config = function()
       require("go").setup()
     end,
     event = {"CmdlineEnter"},
     ft = {"go", 'gomod'},
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+  {
+    "gbprod/yanky.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
   },
   { 'nvim-pack/nvim-spectre',
       config = function()
@@ -822,6 +834,15 @@ vim.api.nvim_create_autocmd({
 })
 
 
+vim.keymap.set({"n","x"}, "p", "<Plug>(YankyPutAfter)")
+vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
+vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
+vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
+
+vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
+vim.keymap.set("n", "<c-n>", "<Plug>(YankyNextEntry)")
+
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
@@ -875,9 +896,7 @@ vim.opt.spelllang = { "en_us" }
 
 vim.cmd('autocmd! Filetype go setlocal tabstop=4')
 
-_G.IS_WSL = OS == 'Linux' and uname.release:lower():find 'microsoft' and true or false
-
-if IS_WSL then
+if _G.IS_WSL then
   vim.g.clipboard = {
           name = "win32yank-wsl",
           copy = {
