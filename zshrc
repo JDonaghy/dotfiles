@@ -20,7 +20,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+#ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -82,6 +82,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+#
+
 plugins=(git
 	zsh-autosuggestions
         kube-ps1)
@@ -132,9 +134,9 @@ export KUBECONFIG="$HOME/.kube/config"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # DBus
-if [[ $(grep -i Microsoft /proc/version) ]]; then
-  sudo /etc/init.d/dbus start &> /dev/null
-fi
+# if [[ $(grep -i Microsoft /proc/version) ]]; then
+#   sudo /etc/init.d/dbus start &> /dev/null
+# fi
 
 # go
 export GOPATH=/usr/local/go
@@ -149,7 +151,6 @@ export PATH="$PNPM_HOME:$PATH"
 
 export KUBE_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
 
-# This needs to be the last line in order for zoxide to function correctly
-eval "$(zoxide init zsh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+source ~/powerlevel10k/powerlevel10k.zsh-theme
