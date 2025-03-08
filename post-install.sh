@@ -21,7 +21,8 @@ sudo apt install -y \
   vim \
   zsh \
   libxss1 \
-  cpu-checker
+  cpu-checker \
+  unzip
 
 # Google Chrome
 pushd $HOME/Downloads
@@ -83,3 +84,7 @@ if [ 0 = `which dotnet | wc -l` ]; then
   sudo apt install -y dotnet8 
   dotnet tool install --global dotnet-script
 fi
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+mkdir -f ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
