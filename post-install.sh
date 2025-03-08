@@ -19,29 +19,15 @@ sudo apt install -y \
   sharutils \
   tmux \
   vim \
-  virt-manager \
   zsh \
   libxss1 \
   cpu-checker
-
-read -r -p "Install KVM? [y/N] " response
-case "$response" in
-    [yY]) 
-        sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-manager
-        sudo adduser $USER libvirt
-        sudo adduser $USER kvm
-        sudo systemctl enable --now libvirtd
-        sudo systemctl status libvirtd
-        ;;
-    *)
-        ;;
-esac
 
 # Google Chrome
 pushd $HOME/Downloads
 if [ 0 = `which google-chrome | wc -l` ]; then
   wget https://dl.google.com/linux/direct/
-  sudo apt install ./google-chrome*.deb
+  sudo apt install -y ./google-chrome*.deb
 fi
 popd
 
