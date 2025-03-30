@@ -85,6 +85,8 @@ if [ 0 = `which dotnet | wc -l` ]; then
   dotnet tool install --global dotnet-script
 fi
 
+rm -rf ~/.oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-mkdir -f ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+mkdir ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+rm ~/.zshrc && ln -s ~/code/dotfiles/zshrc ~/.zshrc

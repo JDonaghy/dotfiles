@@ -153,4 +153,4 @@ export KUBE_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+source /home/linuxbrew/.linuxbrew/Cellar/powerlevel10k/1.20.0/share/powerlevel10k/powerlevel10k.zsh-theme
