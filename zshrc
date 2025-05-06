@@ -145,12 +145,23 @@ export PATH=$PATH:$GOPATH/bin
 # go end
 
 # pnpm
-export PNPM_HOME="/home/jdonaghy/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
-export KUBE_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
+#flutter
+export FLUTTER_BIN="$HOME/development/flutter/bin"
+export PATH="$PATH:$FLUTTER_BIN"
+# flutter end
 
+# pipx
+export PATH="$PATH:$HOME/.local/bin"
+
+export KUBE_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-source /home/linuxbrew/.linuxbrew/Cellar/powerlevel10k/1.20.0/share/powerlevel10k/powerlevel10k.zsh-theme
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="$HOME/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
