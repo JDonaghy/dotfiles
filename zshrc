@@ -139,7 +139,8 @@ export KUBECONFIG="$HOME/.kube/config"
 # fi
 
 # go
-export GOPATH=/usr/local/go
+export GOPATH=/usr/local/go/packages
+export GOROOT=/usr/local/go
 export GOBIN=/usr/local/go/bin
 export PATH=$PATH:$GOPATH/bin
 # go end

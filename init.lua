@@ -16,6 +16,55 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
+--
+-- [[ Configure LSP ]]
+--  This function gets run when an LSP connects to a particular buffer.
+local on_attach = function(_, bufnr)
+  -- NOTE: Remember that lua is a real programming language, and as such it is possible
+  -- to define small helper and utility functions so you don't have to repeat yourself
+  -- many times.
+  --
+  -- In this case, we create a function that lets us more easily define mappings specific
+  -- for LSP related items. It sets the mode, buffer and description for us each time.
+  local nmap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
+
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
+
+  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+
+  -- See `:help K` for why this keymap
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+
+  -- Lesser used LSP functionality
+  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  nmap('<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, '[W]orkspace [L]ist Folders')
+
+  -- Vimspector: for normal mode - the word under the cursor
+  nmap('<Leader>di', '<Plug>VimspectorBalloonEval', 'Debug Inspect')
+
+  -- Create a command `:Format` local to the LSP buffer
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+    vim.lsp.buf.format()
+  end, { desc = 'Format current buffer with LSP' })
+end
+--
 
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
@@ -31,7 +80,6 @@ require('lazy').setup({
   { 'kkharji/sqlite.lua' },
   { 'Hoffs/omnisharp-extended-lsp.nvim' },
   { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
-  { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/nvim-cmp' },
   { 'L3MON4D3/LuaSnip' },
   { 'Issafalcon/lsp-overloads.nvim' },
@@ -39,12 +87,103 @@ require('lazy').setup({
   { 'sindrets/diffview.nvim' },
   { 'junegunn/gv.vim' },
   { 'nvim-lua/plenary.nvim' },
+  { 'stevearc/dressing.nvim', },
   { 'simrat39/rust-tools.nvim' },
   { 'towolf/vim-helm' }, -- vim syntax for helm templates (yaml + gotmpl + sprig + custom)
+  { 'hrsh7th/cmp-nvim-lsp' },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  { -- optional cmp completion source for require statements and module annotations
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
+  },
   { 'PhilRunninger/bufselect',
       init = function()
         vim.api.nvim_set_keymap ('n', '<Space>bv', '<Cmd>ShowBufferList<CR>', { noremap = true, silent = true })
       end,
+  },
+  { "rcarriga/nvim-dap-ui", 
+    dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"} 
+  },
+  { 'dart-lang/dart-vim-plugin' },
+  {
+    'akinsho/flutter-tools.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim',
+    },
+    config = function ()
+      local map = vim.keymap.set
+      map("n", "fR", "<cmd> FlutterRun <cr>")
+      map("n", "fd", "<cmd> FlutterDevices <cr>")
+      map("n", "fr", "<cmd> FlutterRestart <cr>")
+      map("n", "fo", "<cmd> FlutterOutlineToggle <cr>")
+      require("flutter-tools").setup({
+        decorations = {
+          statusline = {
+            app_version = true,
+            device = true,
+          },
+        },
+        widget_guides = {
+          enabled = true,
+        },
+        closing_tags = {
+          highlight = 'Comment',
+          prefix = '//',
+          enabled = true,
+        },
+        lsp = {
+          on_attach = on_attach,
+          color = {
+            enabled = true,
+            background = true,
+            foreground = false,
+            virtual_text = true,
+            virtual_text_str = "■",
+          },
+          settings = {
+            showTodos = true,
+            completeFunctionCalls = true,
+            enableSnippets = true,
+          },
+        },
+        debugger = {
+          enabled = true,
+          run_via_dap = true,
+          exception_breakpoints = {},
+          register_configurations = function(_)
+            require('dap').configurations.dart = {
+              {
+                    type = "dart",
+                    request = "launch",
+                    name = "Launch",
+                    cwd = "${workspaceFolder}",
+                    program = "${workspaceFolder}/lib/main.dart",
+                    debugSdkLibraries = false,
+                    debugExternalPackageLibraries = false,
+              },
+            }
+          end,
+        },
+      })
+    end,
+    ft = "dart"
   },
   {
     "ray-x/go.nvim",
@@ -88,8 +227,6 @@ require('lazy').setup({
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
-      -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
     },
   },
   {
@@ -415,18 +552,6 @@ require('lazy').setup({
     end,
     cmd = "Glow"
   },
-  {'puremourning/vimspector',
-    -- Requires pynvim: "pip3 install pynvim"
-    lazy = false,
-    cmd = { "VimspectorInstall", "VimspectorUpdate" },
-    fn = { "vimspector#Launch()", "vimspector#ToggleBreakpoint", "vimspector#Continue" },
-    init = function ()
-      local map = vim.api.nvim_set_keymap
-      local opts = { noremap = true, silent = true }
-
-      vim.g.vimspector_enable_mappings = "HUMAN"
-    end
-  }
 }, {})
 
 -- [[ Setting options ]]
@@ -613,54 +738,6 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
--- [[ Configure LSP ]]
---  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = 'LSP: ' .. desc
-    end
-
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-  end
-
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-  -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-  -- Lesser used LSP functionality
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
-
-  -- Vimspector: for normal mode - the word under the cursor
-  nmap('<Leader>di', '<Plug>VimspectorBalloonEval', 'Debug Inspect')
-
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
-end
---
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -682,10 +759,39 @@ local servers = {
   }
 }
 
+
 -- Setup neovim lua configuration
-require('neodev').setup({
-  library = { plugins = { "nvim-dap-ui" }, types = true },
+require("lazydev").setup({
+  library = { "nvim-dap-ui" },
 })
+
+require("dapui").setup()
+
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end
+
+local sign = vim.fn.sign_define
+sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = ""})
+sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = ""})
+sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = ""})
+
+vim.keymap.set('n', '<leader>db', ':lua require("dap").toggle_breakpoint()<CR>')
+vim.keymap.set('n', '<leader>dB', ':lua require("dap").set_breakpoint(vim.fn.input("Breakpoint Condition: "))<CR>')
+vim.keymap.set('n', '<leader>dd', ':lua require("dap").continue()<CR>')
+vim.keymap.set('n', '<leader>do', ':lua require("dap").step_over()<CR>')
+vim.keymap.set('n', '<leader>di', ':lua require("dap").step_ito()<CR>')
+
 
 
 local lsp_zero = require('lsp-zero')
@@ -708,8 +814,13 @@ lsp_zero.on_attach(function(client, bufnr)
   end
 end)
 
+require'cmp'.setup {
+  sources = {
+    { name = 'nvim_lsp' }
+  }
+}
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local mason_lspconfig = require 'mason-lspconfig'
@@ -818,6 +929,27 @@ require("barbecue").setup({
   create_autocmd = false, -- prevent barbecue from updating itself automatically
 })
 
+-- <ctrl-s> to Save
+vim.keymap.set({ "n", "v", "i" }, "<C-S>", "<C-c>:update<cr>", { silent = true, desc = "Save" })
+
+local sign = vim.fn.sign_define
+sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = ""})
+sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = ""})
+sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = ""})
+
+vim.keymap.set('n', '<leader>db', ':lua require("dap").toggle_breakpoint()<CR>')
+vim.keymap.set('n', '<leader>dB', ':lua require("dap").set_breakpoint(vim.fn.input("Breakpoint Condition: "))<CR>')
+vim.keymap.set('n', '<leader>dd', ':lua require("dap").continue()<CR>')
+vim.keymap.set('n', '<leader>do', ':lua require("dap").step_over()<CR>')
+vim.keymap.set('n', '<leader>di', ':lua require("dap").step_ito()<CR>')
+
+
+
+--#dart
+vim.g.dart_format_on_save = 1
+vim.g.dart_trailing_comma_indent = true
+
+
 vim.api.nvim_create_autocmd({
   "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
   "BufWinEnter",
@@ -832,6 +964,12 @@ vim.api.nvim_create_autocmd({
     require("barbecue.ui").update()
   end,
 })
+
+-- dart/flutter
+vim.keymap.set('n', '<leader>ff', ':FlutterRun<CR>')
+vim.keymap.set('n', '<leader>fq', ':FlutterQuit<CR>')
+vim.keymap.set('n', '<leader>fr', ':FlutterReload<CR>')
+vim.keymap.set('n', '<leader>fR', ':FlutterRestart<CR>')
 
 
 vim.keymap.set({"n","x"}, "p", "<Plug>(YankyPutAfter)")
