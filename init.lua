@@ -102,6 +102,16 @@ require('lazy').setup({
       },
     },
   },
+  {
+     "amitds1997/remote-nvim.nvim",
+     version = "*", -- Pin to GitHub releases
+     dependencies = {
+         "nvim-lua/plenary.nvim", -- For standard functions
+         "MunifTanjim/nui.nvim", -- To build the plugin UI
+         "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
+     },
+     config = true,
+  },
   { -- optional cmp completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -220,8 +230,11 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true },
-      { 'williamboman/mason-lspconfig.nvim' },
+      { 'mason-org/mason.nvim', opts = {} },
+      { 'mason-org/mason-lspconfig.nvim',
+        dependencies = { 'neovim/nvim-lspconfig' },
+        opts = {}
+      },
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -825,48 +838,56 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local mason_lspconfig = require 'mason-lspconfig'
 
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
-}
+-- mason_lspconfig.setup {
+--   ensure_installed = vim.tbl_keys(servers),
+-- }
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-    }
-  end,
-
-  ["bicep"] = function ()
-    require('lspconfig').bicep.setup {
-      cmd = { 'dotnet', '/home/jdonaghy/.local/share/nvim/mason/packages/bicep-lsp/extension/bicepLanguageServer/Bicep.LangServer.dll' },
-    }
-  end,
-
-  ["rust_analyzer"] = function ()
-    local rt = require("rust-tools")
-    rt.setup({
-      server = {
-        on_attach = function(_, bufnr)
-          -- Hover actions
-          vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-          -- Code action groups
-          vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-        end,
-      },
-    })
-  end,
-
-  ['helm_ls'] = function ()
-    require('lspconfig').helm_ls.setup {
-      yamlls = {
+vim.lsp.config('helm_ls', {
+  settings = {
+    yamlls = {
         path = "yaml-language-server",
-      }
-    }
-  end,
-}
+      },
+  },
+})
+
+-- mason_lspconfig.setup_handlers {
+--   function(server_name)
+--     require('lspconfig')[server_name].setup {
+--       capabilities = capabilities,
+--       on_attach = on_attach,
+--       settings = servers[server_name],
+--       filetypes = (servers[server_name] or {}).filetypes,
+--     }
+--   end,
+--
+--   ["bicep"] = function ()
+--     require('lspconfig').bicep.setup {
+--       cmd = { 'dotnet', '/home/jdonaghy/.local/share/nvim/mason/packages/bicep-lsp/extension/bicepLanguageServer/Bicep.LangServer.dll' },
+--     }
+--   end,
+--
+--   ["rust_analyzer"] = function ()
+--     local rt = require("rust-tools")
+--     rt.setup({
+--       server = {
+--         on_attach = function(_, bufnr)
+--           -- Hover actions
+--           vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+--           -- Code action groups
+--           vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+--         end,
+--       },
+--     })
+--   end,
+--
+--   ['helm_ls'] = function ()
+--     require('lspconfig').helm_ls.setup {
+--       yamlls = {
+--         path = "yaml-language-server",
+--       }
+--     }
+--   end,
+-- }
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
