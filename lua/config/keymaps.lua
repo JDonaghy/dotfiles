@@ -1,7 +1,7 @@
--- [[ Basic Keymaps ]]
-
--- Set leader keys
-vim.g.mapleader = ' '
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostics' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Diagnostics to loclist' })
 vim.g.maplocalleader = ' '
 
 -- Keymaps for better default experience
@@ -51,4 +51,3 @@ vim.keymap.set('n', '<leader>di', ':lua require("dap").step_ito()<CR>')
 
 -- Python VirtualEnv keymaps
 vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select VirtualEnv" })
-

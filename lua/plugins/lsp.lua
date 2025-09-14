@@ -1,9 +1,7 @@
--- LSP-related plugins
 return {
   { 'Hoffs/omnisharp-extended-lsp.nvim' },
   { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
   { 'Issafalcon/lsp-overloads.nvim' },
-  
   {
     "folke/lazydev.nvim",
     ft = "lua", -- only load on lua files
