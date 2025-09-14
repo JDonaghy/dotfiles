@@ -17,6 +17,7 @@ unzip DroidSansMono.zip -d ~/.fonts
 fc-cache -fv
 ```
 
+
 # Zshrc
 ```
 # zodide
@@ -29,7 +30,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 git clone --depth=1 https://github.com/romkatv/powe nvm install node
 rlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ln -s ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k ${HOME}/powerlevel10k
-ln -s ${HOME}/code/dotfiles/zshrc ~/.zshrc
 
 ```
 

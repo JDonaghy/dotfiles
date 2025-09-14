@@ -22,6 +22,7 @@ sudo apt install -y \
   zsh \
   libxss1 \
   cpu-checker \
+  stow \
   unzip
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -105,3 +106,13 @@ rm ~/.zshrc && ln -s ~/code/dotfiles/zshrc ~/.zshrc
 
 # TODO: For monitor not working after resume bug 
 # https://askubuntu.com/questions/1333688/how-to-get-external-monitor-to-reconnect-after-sleep-or-power-off/1427781#1427781
+pushd $HOME
+rm -rf .bash_profile .bash_logout .bashrc .zprofile .zshrc .config/nvim
+pushd src/dotfiles
+stow -t ~ nvim
+stow -t ~ bash
+stow -t ~ zsh
+popd
+popd
+
+echo "Review README for further instruction on completing setup"
