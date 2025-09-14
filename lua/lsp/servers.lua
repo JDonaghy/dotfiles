@@ -1,4 +1,3 @@
--- LSP server configurations
 local M = {}
 
 -- Server settings
@@ -11,6 +10,17 @@ M.servers = {
   },
   omnisharp = {
     filetypes = { 'cs', 'csx' },
+  },
+  pyright = {
+    settings = {
+      python = {
+        analysis = {
+          typeCheckingMode = "off",
+          autoSearchPaths = true,
+          useLibraryCodeForTypes = true,
+        }
+      }
+    }
   }
 }
 

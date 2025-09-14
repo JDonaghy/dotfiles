@@ -24,6 +24,8 @@ sudo apt install -y \
   cpu-checker \
   unzip
 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
 # Google Chrome
 pushd $HOME/Downloads
 if [ 0 = `which google-chrome | wc -l` ]; then
@@ -84,6 +86,15 @@ brew install \
 if [ 0 = `which dotnet | wc -l` ]; then
   sudo apt install -y dotnet8 
   dotnet tool install --global dotnet-script
+  wget https://github.com/Samsung/netcoredbg/releases/download/3.1.2-1054/netcoredbg-linux-amd64.tar.gz
+  tar -xvf netcoredbg-linux-amd64.tar.gz
+  chmod u+x netcoredbg/netcoredbg
+  mv netcoredbg/* $HOME/.local/bin
+  rmdir netcoredbg
+  
+  mkdir -p $HOME/.local/bin
+  mv netcoredbg/* $HOME/.local/bin
+
 fi
 
 rm -rf ~/.oh-my-zsh

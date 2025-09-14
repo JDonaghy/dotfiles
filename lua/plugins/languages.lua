@@ -1,7 +1,12 @@
 -- Language-specific plugins
 return {
   { 'simrat39/rust-tools.nvim' },
-
+  {
+    "linux-cultist/venv-selector.nvim",
+    dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
+    config = true,
+    event = "VeryLazy",
+  },
   {
     'akinsho/flutter-tools.nvim',
     dependencies = {
