@@ -145,6 +145,16 @@ export GOBIN=/usr/local/go/bin
 export PATH=$PATH:$GOPATH/bin
 # go end
 
+# flutter
+export ANDROID_HOME="/home/john/Android/Sdk"
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin/ 
+export PATH=$PATH:$ANDROID_HOME/build-tools/36.0.0/
+export PATH=$PATH:$ANDROID_HOME/emulator/bin64/
+export PATH=$PATH:$HOME/tools/cmdline-tools/bin
+
+# flutter end
+
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
