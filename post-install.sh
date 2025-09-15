@@ -107,11 +107,12 @@ rm ~/.zshrc && ln -s ~/code/dotfiles/zshrc ~/.zshrc
 # TODO: For monitor not working after resume bug 
 # https://askubuntu.com/questions/1333688/how-to-get-external-monitor-to-reconnect-after-sleep-or-power-off/1427781#1427781
 pushd $HOME
-rm -rf .bash_profile .bash_logout .bashrc .zprofile .zshrc .config/nvim
+rm -rf .bash_profile .bash_logout .bashrc .zprofile .zshrc .tmux .config/nvim
 pushd src/dotfiles
 stow -t ~ nvim
 stow -t ~ bash
 stow -t ~ zsh
+stow -t ~ tmux
 popd
 popd
 
