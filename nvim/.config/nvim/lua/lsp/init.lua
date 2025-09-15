@@ -9,24 +9,19 @@ require("lazydev").setup({
 
 local lsp_zero = require('lsp-zero')
 
-lsp_zero.configure('roslyn', {
-  -- Optional: add any custom settings here
-})
-
--- lsp_zero.configure('omnisharp', {
---   handlers = {
---     ["textDocument/definition"] = require('omnisharp_extended').handler,
---     ["textDocument/typeDefinition"] = require('omnisharp_extended').type_definition_handler,
---     ["textDocument/references"] = require('omnisharp_extended').references_handler,
---     ["textDocument/implementation"] = require('omnisharp_extended').implementation_handler,
---   },
---   enable_editorconfig_support = true,  -- Respect .editorconfig files
---   enable_roslyn_analyzers = true,      -- Use Roslyn analyzers for advanced diagnostics
---   organize_imports_on_format = true,   -- Organize usings on format
---   enable_import_completion = true,     -- Enable completion for unimported types
---   analyze_open_documents_only = false, -- Analyze whole project, not just open files
--- })
 lsp_zero.configure('intelephense', {})
+-- lsp_zero.configure('roslyn', {
+--   settings = {
+--     ["csharp|inlay_hints"] = {
+--       csharp_enable_inlay_hints_for_implicit_object_creation = true,
+--       csharp_enable_inlay_hints_for_implicit_variable_types = true,
+--     },
+--     ["csharp|code_lens"] = {
+--       dotnet_enable_references_code_lens = true,
+--     },
+--   },
+-- })
+
 lsp_zero.configure('pyright', {})
 lsp_zero.configure('ts_ls', {})         -- TypeScript/JavaScript
 lsp_zero.configure('rust_analyzer', {}) -- Rust
@@ -63,6 +58,21 @@ end)
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+vim.lsp.config("roslyn", {
+  on_attach = function()
+    print("This will run when the server attaches!")
+  end,
+  settings = {
+    ["csharp|inlay_hints"] = {
+      csharp_enable_inlay_hints_for_implicit_object_creation = true,
+      csharp_enable_inlay_hints_for_implicit_variable_types = true,
+    },
+    ["csharp|code_lens"] = {
+      dotnet_enable_references_code_lens = true,
+    },
+  },
+})
 
 vim.lsp.config('helm_ls', {
   settings = {
