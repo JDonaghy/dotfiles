@@ -176,3 +176,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+#
+#ZScaler support
+export CURL_CA_BUNDLE=/usr/local/share/ca-certificates/ZscalerRootCA.crt
+export SSL_CERT_FILE=/usr/local/share/ca-certificates/ZscalerRootCA.crt
