@@ -1,8 +1,3 @@
-# Neovim
-Minimalist Neovim setup for C# development:
-- Omnisharp LSP integration via Mason
-- C# debugging via `netcoredbg`
-
 # Fonts
 Source: https://gist.github.com/matthewjberger/7dd7e079f282f8138a9dc3b045ebefa0#file-instructions-md
 

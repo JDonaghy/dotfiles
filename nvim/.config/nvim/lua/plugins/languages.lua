@@ -1,6 +1,7 @@
 -- Language-specific plugins
 return {
   { 'simrat39/rust-tools.nvim' },
+  { "seblyng/roslyn.nvim" },
   {
     "linux-cultist/venv-selector.nvim",
     dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
