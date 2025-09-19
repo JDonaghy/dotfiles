@@ -1,12 +1,13 @@
 -- Editor enhancement plugins
 return {
-  { 'kevinhwang91/nvim-ufo',
-    dependencies = {'kevinhwang91/promise-async'},
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 'kevinhwang91/promise-async' },
     config = function()
       require('ufo').setup({
-          provider_selector = function(bufnr, filetype, buftype)
-              return {'treesitter', 'indent'}
-          end
+        provider_selector = function(bufnr, filetype, buftype)
+          return { 'treesitter', 'indent' }
+        end
       })
       vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
       vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
@@ -22,13 +23,15 @@ return {
     },
   },
 
-  { 'nvim-pack/nvim-spectre',
-      config = function()
-        require('spectre').setup()
-      end
+  {
+    'nvim-pack/nvim-spectre',
+    config = function()
+      require('spectre').setup()
+    end
   },
 
-  {'voldikss/vim-floaterm',
+  {
+    'voldikss/vim-floaterm',
     config = function()
       local set = vim.keymap.set
       set('n', '<Leader>tf', '<Cmd>FloatermToggle!<CR>')
@@ -36,27 +39,30 @@ return {
   },
 
   {
-  'rmagatti/auto-session',
+    'rmagatti/auto-session',
     lazy = false,
     config = function()
-      require("auto-session").setup{
+      require("auto-session").setup {
         -- log_level = 'debug',
-        args_allow_files_auto_save = true
+        args_allow_files_auto_save = true,
       }
     end
   },
 
-  {'akinsho/toggleterm.nvim', version = "*",
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
     config = function()
-      require("toggleterm").setup{
+      require("toggleterm").setup {
         open_mapping = [[<c-\>]]
       }
 
-      local Terminal  = require('toggleterm.terminal').Terminal
+      local Terminal = require('toggleterm.terminal').Terminal
     end,
   },
 
-  {'stevearc/overseer.nvim',
+  {
+    'stevearc/overseer.nvim',
     opts = {},
     config = function()
       require('overseer').setup({

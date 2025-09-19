@@ -28,11 +28,11 @@ return {
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
-      main = 'ibl',
-      opts = {},
-      config = function()
-        require('ibl').setup()
-      end
+    main = 'ibl',
+    opts = {},
+    config = function()
+      require('ibl').setup()
+    end
   },
 
   {
@@ -62,28 +62,44 @@ return {
       require("nvim-tree").setup {
         update_focused_file = {
           enable = true,
-        }
+        },
+        git = {
+          ignore = false,
+        },
+        renderer = {
+          highlight_git = true, -- Highlights files/folders with git status colors
+          icons = {
+            show = {
+              git = true,        -- Shows git status icons (A/M/D/untracked, etc.)
+              folder = true,     -- Shows folder icons
+              file = true,       -- Shows file icons
+              folder_arrow = true, -- Shows arrows for expandable folders
+            },
+          },
+        },
       }
       local function opts(desc)
-        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        return { desc = "nvim-tree: " .. desc, noremap = true, silent = true, nowait = true }
       end
       vim.keymap.set('n', '<leader>tt', api.tree.toggle, opts('Toggle Tree'))
     end,
   },
 
-  { 'PhilRunninger/bufselect',
-      init = function()
-        vim.api.nvim_set_keymap ('n', '<Space>bv', '<Cmd>ShowBufferList<CR>', { noremap = true, silent = true })
-      end,
+  {
+    'PhilRunninger/bufselect',
+    init = function()
+      vim.api.nvim_set_keymap('n', '<Space>bv', '<Cmd>ShowBufferList<CR>', { noremap = true, silent = true })
+    end,
   },
 
-  {'romgrk/barbar.nvim',
+  {
+    'romgrk/barbar.nvim',
     dependencies = {
-      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'lewis6991/gitsigns.nvim',     -- OPTIONAL: for git status
       'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
     },
     init = function()
-      vim.g.barbar_auto_setup = false 
+      vim.g.barbar_auto_setup = false
       local map = vim.api.nvim_set_keymap
       local opts = { noremap = true, silent = true }
 
@@ -133,3 +149,4 @@ return {
     version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
 }
+
