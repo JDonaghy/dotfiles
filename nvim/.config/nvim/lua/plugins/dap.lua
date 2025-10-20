@@ -23,23 +23,4 @@ return {
       sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "" })
     end,
   },
-  {
-    'nicholasmata/nvim-dap-cs',
-    dependencies = { 'mfussenegger/nvim-dap' },
-    config = function()
-      local dap_configurations = {
-        {
-          type = "coreclr",
-          name = "Attach remote",
-          mode = "remote",
-          request = "attach",
-        },
-      }
-      local netcoredbg = {
-        path = vim.env.HOME .. "/programs/netcoredbg/netcoredbg"
-      }
-      require('dap-cs').setup(dap_configurations, netcoredbg)
-    end
-
-  },
 }
