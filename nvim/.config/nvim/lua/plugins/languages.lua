@@ -1,14 +1,20 @@
 -- Language-specific plugins
 return {
   { 'simrat39/rust-tools.nvim' },
-
+  { 'seblyng/roslyn.nvim' },
+  {
+    "linux-cultist/venv-selector.nvim",
+    dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
+    config = true,
+    event = "VeryLazy",
+  },
   {
     'akinsho/flutter-tools.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'stevearc/dressing.nvim',
     },
-    config = function ()
+    config = function()
       local map = vim.keymap.set
       map("n", "fR", "<cmd> FlutterRun <cr>")
       map("n", "fd", "<cmd> FlutterDevices <cr>")
@@ -51,13 +57,13 @@ return {
           register_configurations = function(_)
             require('dap').configurations.dart = {
               {
-                    type = "dart",
-                    request = "launch",
-                    name = "Launch",
-                    cwd = "${workspaceFolder}",
-                    program = "${workspaceFolder}/lib/main.dart",
-                    debugSdkLibraries = false,
-                    debugExternalPackageLibraries = false,
+                type = "dart",
+                request = "launch",
+                name = "Launch",
+                cwd = "${workspaceFolder}",
+                program = "${workspaceFolder}/lib/main.dart",
+                debugSdkLibraries = false,
+                debugExternalPackageLibraries = false,
               },
             }
           end,
@@ -69,7 +75,7 @@ return {
 
   {
     "ray-x/go.nvim",
-    dependencies = {  -- optional packages
+    dependencies = { -- optional packages
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
@@ -78,8 +84,8 @@ return {
     config = function()
       require("go").setup()
     end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
 
@@ -93,7 +99,8 @@ return {
     opts = {},
   },
 
-  {"ellisonleao/glow.nvim",
+  {
+    "ellisonleao/glow.nvim",
     config = function()
       require('glow').setup({
         install_path = "/home/linuxbrew/.linuxbrew/bin/glow",

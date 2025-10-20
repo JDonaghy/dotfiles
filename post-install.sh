@@ -22,7 +22,10 @@ sudo apt install -y \
   zsh \
   libxss1 \
   cpu-checker \
+  stow \
   unzip
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 # Google Chrome
 pushd $HOME/Downloads
@@ -84,6 +87,15 @@ brew install \
 if [ 0 = `which dotnet | wc -l` ]; then
   sudo apt install -y dotnet8 
   dotnet tool install --global dotnet-script
+  wget https://github.com/Samsung/netcoredbg/releases/download/3.1.2-1054/netcoredbg-linux-amd64.tar.gz
+  tar -xvf netcoredbg-linux-amd64.tar.gz
+  chmod u+x netcoredbg/netcoredbg
+  mv netcoredbg/* $HOME/.local/bin
+  rmdir netcoredbg
+  
+  mkdir -p $HOME/.local/bin
+  mv netcoredbg/* $HOME/.local/bin
+
 fi
 
 rm -rf ~/.oh-my-zsh
@@ -94,3 +106,14 @@ rm ~/.zshrc && ln -s ~/code/dotfiles/zshrc ~/.zshrc
 
 # TODO: For monitor not working after resume bug 
 # https://askubuntu.com/questions/1333688/how-to-get-external-monitor-to-reconnect-after-sleep-or-power-off/1427781#1427781
+pushd $HOME
+rm -rf .bash_profile .bash_logout .bashrc .zprofile .zshrc .tmux .config/nvim
+pushd src/dotfiles
+stow -t ~ nvim
+stow -t ~ bash
+stow -t ~ zsh
+stow -t ~ tmux
+popd
+popd
+
+echo "Review README for further instruction on completing setup"

@@ -1,44 +1,39 @@
 -- Telescope (fuzzy finder) configuration
 return {
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', branch = '0.1.x',
-     dependencies = {
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
       { 'nvim-lua/plenary.nvim' },
       { 'jonarrien/telescope-cmdline.nvim' },
       { 'nvim-telescope/telescope-live-grep-args.nvim', version = "^1.0.0", },
-      config = function()
-        require("telescope").load_extension("live_grep_args")
-        require('telescope').load_extension('smart_history')
-      end
     },
     keys = {
       { '<Leader>;', '<cmd>Telescope cmdline<cr>', desc = 'Cmdline' }
     },
-    opts = {
-      extensions = {
-        cmdline = {
-          picker = {
-            layout_config = {
-              width  = 120,
-              height = 25,
-            }
-          },
-          mappings    = {
-            complete      = '<Tab>',
-            run_selection = '<C-CR>',
-            run_input     = '<CR>',
-          },
-        },
-      },
-    },
-    config = function(_, opts)
-      require("telescope").setup(opts)
-      require("telescope").load_extension('cmdline')
-      
-      -- [[ Configure Telescope ]]
-      -- See `:help telescope` and `:help telescope.setup()`
-      require('telescope').setup {
+    config = function()
+      local telescope = require("telescope")
+      local lga_actions = require("telescope-live-grep-args.actions")
+
+      telescope.setup({
         defaults = {
+          hidden = true,
+          vimgrep_arguments = {
+            -- all required except `--smart-case`
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--hidden",
+            "--glob=!.git/",
+
+
+            -- add your options
+          },
           history = {
             path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
             limit = 100,
@@ -50,9 +45,45 @@ return {
             },
           },
         },
-      }
-      local builtin = require('telescope.builtin')
-    
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+          live_grep = {
+            hidden = true,
+          },
+        },
+        extensions = {
+          cmdline = {
+            picker   = {
+              layout_config = {
+                width  = 120,
+                height = 25,
+              }
+            },
+            mappings = {
+              complete      = '<Tab>',
+              run_selection = '<C-CR>',
+              run_input     = '<CR>',
+            },
+          },
+          live_grep_args = {
+            auto_quoting = true,
+            mappings = { -- extend mappings
+              i = {
+                ["<C-k>"] = lga_actions.quote_prompt(),
+                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                -- freeze the current list and start a fuzzy search in the frozen list
+                ["<C-space>"] = lga_actions.to_fuzzy_refine,
+              },
+            },
+            additional_args = { "--hidden", "--no-ignore" },
+          },
+        },
+      })
+      require("telescope").load_extension('cmdline')
+      require("telescope").load_extension('live_grep_args')
+
 
       vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
       vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
@@ -73,8 +104,10 @@ return {
       vim.keymap.set('n', '<leader>sb', require("telescope.builtin").buffers, { desc = '[S]earch [B]uffers ' })
       vim.keymap.set('n', '<leader>sc', require("telescope.builtin").commands, { desc = '[S]earch [C]ommands ' })
       vim.keymap.set('n', '<leader>st', require("telescope.builtin").treesitter, { desc = '[S]earch [T]reesitter ' })
-      vim.keymap.set('n', '<leader>ss', require("telescope.builtin").current_buffer_fuzzy_find, { desc = '[S]earch [s]search ' })
-      vim.keymap.set('n', '<leader>sr', require("telescope").extensions.live_grep_args.live_grep_args, { noremap = true, desc = '[S]earch current [R]ipgrep ' })
+      vim.keymap.set('n', '<leader>ss', require("telescope.builtin").current_buffer_fuzzy_find,
+        { desc = '[S]earch [s]search ' })
+      vim.keymap.set('n', '<leader>sr', require("telescope").extensions.live_grep_args.live_grep_args,
+        { noremap = true, desc = '[S]earch current [R]ipgrep ' })
 
       -- Enable telescope fzf native, if installed
       pcall(require('telescope').load_extension, 'fzf')
