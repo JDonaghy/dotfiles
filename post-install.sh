@@ -101,7 +101,7 @@ rm -rf ~/.oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 mkdir ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-rm ~/.zshrc && ln -s ~/code/dotfiles/zshrc ~/.zshrc
+rm ~/.zshrc && ln -s ~/src/dotfiles/zshrc ~/.zshrc
 
 # TODO: For monitor not working after resume bug 
 # https://askubuntu.com/questions/1333688/how-to-get-external-monitor-to-reconnect-after-sleep-or-power-off/1427781#1427781
