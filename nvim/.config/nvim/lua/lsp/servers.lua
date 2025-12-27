@@ -8,9 +8,6 @@ M.servers = {
       telemetry = { enable = false },
     },
   },
-  omnisharp = {
-    filetypes = { 'cs', 'csx' },
-  },
   pyright = {
     settings = {
       python = {

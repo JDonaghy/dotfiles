@@ -180,3 +180,4 @@ export PATH="$HOME/.rd/bin:$PATH"
 #ZScaler support
 export CURL_CA_BUNDLE=/usr/local/share/ca-certificates/ZscalerRootCA.crt
 export SSL_CERT_FILE=/usr/local/share/ca-certificates/ZscalerRootCA.crt
+export COLORTERM=truecolor
