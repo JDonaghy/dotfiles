@@ -1,0 +1,87 @@
+tap "derailed/k9s"
+tap "jandedobbeleer/oh-my-posh"
+# Extremely Fast Compression algorithm
+brew "lz4"
+# General-purpose data compression with high compression ratio
+brew "xz"
+# General-purpose lossless data-compression library
+brew "zlib"
+# Zstandard is a real-time compression algorithm
+brew "zstd"
+# GNU binary tools for native development
+brew "binutils"
+# Mozilla CA certificate store
+brew "ca-certificates"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# C library implementing the SSH2 protocol
+brew "libssh2"
+# C library of Git core methods that is re-entrant and linkable
+brew "libgit2"
+# Modern, maintained replacement for ls
+brew "eza"
+# GNU multiple precision arithmetic library
+brew "gmp"
+# Integer Set Library for the polyhedral model
+brew "isl"
+# C library for multiple-precision floating-point computations
+brew "mpfr"
+# C library for the arithmetic of high precision complex numbers
+brew "libmpc"
+# GNU compiler collection
+brew "gcc"
+# Text-based UI library
+brew "ncurses"
+# Library for command-line editing
+brew "readline"
+# GNOME XML library
+brew "libxml2"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Kubernetes package manager
+brew "helm"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@76"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
+# Tool to move from `docker-compose` to Kubernetes
+brew "kompose"
+# BSD-style licensed readline alternative
+brew "libedit"
+# Network authentication protocol
+brew "krb5"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Port of Sun's Transport-Independent RPC library to Linux
+brew "libtirpc"
+# Public client interface for NIS(YP) and NIS+
+brew "libnsl"
+# Multi-platform support library with a focus on asynchronous I/O
+brew "libuv"
+# C99 library which implements a VT220 or xterm terminal emulator
+brew "libvterm"
+# Parsing Expression Grammars For Lua
+brew "lpeg"
+# Just-In-Time Compiler (JIT) for the Lua programming language
+brew "luajit"
+# Bare libuv bindings for lua
+brew "luv"
+# Library for a binary-based efficient data interchange format
+brew "msgpack"
+# Incremental parsing library
+brew "tree-sitter"
+# Very basic terminfo library
+brew "unibilium"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Prompt theme engine for any shell
+brew "oh-my-posh"
+# Theme for zsh
+brew "powerlevel10k"
+# Real-time type-ahead completion for Zsh
+brew "zsh-autocomplete"
+cargo "alacritty"
