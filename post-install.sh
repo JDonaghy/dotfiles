@@ -27,61 +27,10 @@ sudo apt install -y \
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-# Google Chrome
-pushd $HOME/Downloads
-if [ 0 = `which google-chrome | wc -l` ]; then
-  wget https://dl.google.com/linux/direct/
-  sudo apt install -y ./google-chrome*.deb
-fi
-popd
-
 # Homebrew
 if [ 0 = `which brew | wc -l` ]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
-
-brew install \
-  binutils \
-  eza \
-  gettext \
-  icu4c@76 \
-  k9s \
-  lazygit \
-  libgit2 \
-  libnsl \
-  libtirpc \
-  libvterm \
-  lpeg \
-  luv \
-  mpfr \
-  ncurses \
-  oh-my-posh \
-  powerlevel10k \
-  tree-sitter \
-  xz \
-  zsh-autocomplete \
-  ca-certificates \
-  gcc \
-  gmp \
-  isl \
-  krb5 \
-  libedit \
-  libmpc \
-  libssh2 \
-  libuv \
-  libxml2 \
-  luajit \
-  lz4 \
-  msgpack \
-  neovim \
-  openssl@3 \
-  readline \
-  unibilium \
-  zlib \
-  zstd \
-  helm \
-  kubectl \
-  go
 
 # dotnet
 if [ 0 = `which dotnet | wc -l` ]; then
@@ -116,7 +65,10 @@ stow -t ~ nvim
 stow -t ~ bash
 stow -t ~ zsh
 stow -t ~ tmux
+stow -t ~ brew
 popd
 popd
+
+brew bundle install
 
 echo "Review README for further instruction on completing setup"
