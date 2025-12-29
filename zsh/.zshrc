@@ -16,7 +16,7 @@ source ~/zsh/zsh-snap/znap.zsh
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
+# Set name of the theme to load --- if set to "random", it qwill
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -124,10 +124,6 @@ alias kgc='k config get-contexts|grep "*"'
 
 export ORT_SUPPORT_STACK="$HOME/src/support-stack/scripts"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 export KUBECONFIG="$HOME/.kube/config"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -170,6 +166,11 @@ export PATH="$PATH:$HOME/.local/bin"
 
 export KUBE_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 

@@ -74,6 +74,8 @@ brew "luv"
 brew "msgpack"
 # Incremental parsing library
 brew "tree-sitter"
+# Incremental parsing library
+brew "tree-sitter-cli"
 # Very basic terminfo library
 brew "unibilium"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -84,4 +86,7 @@ brew "oh-my-posh"
 brew "powerlevel10k"
 # Real-time type-ahead completion for Zsh
 brew "zsh-autocomplete"
-cargo "alacritty"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
+# Manage multiple Node.js versions
+brew "nvm"
