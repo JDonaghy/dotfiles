@@ -21,10 +21,18 @@ cd $HOME/src/dotfiles
 ```
 
 ## Installation on Immutable Linux
+Note that this should work on regular Linux as well provided the requirements are met.
 ### Requirements
-- Distrobox
-- Linux Homebrew 
-- Podman
+The following need to be pre-installed on the system. 
+- [Distrobox](https://distrobox.it)
+- [Homebrew on linux](https://docs.brew.sh/Homebrew-on-Linux)
+- [Podman](https://podman.io/)
+
+### rpm-ostree
+For missing packages that can't be installed via Flatpak or Homebrew in Fedora Silverblue, Kinoite etc. E.g.
+```
+rpm-ostree install alacritty # and reboot
+```
 
 Run the following on the host:
 ```bash
@@ -37,13 +45,23 @@ podman images
 distrobox create --name ubuntu-dev-image --image ubuntu-dev-image --volume /home/linuxbrew:/home/linuxbrew:rw
 ```
 
-To connect to your distrobox image:
+To connect to your distrobox guest container:
 ```
-distrobox enter ubuntu-dev-jd
+distrobox enter ubuntu-dev-image
 ```
 
+## Post-installation
+If you don't already have an SSH key generate a [new ssh one for Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), sign into your Github account and upload it.
+```
+git config --global user.name "John Doe"
+git config --global user.email "johndoe@email.com"
+cd $HOME/src/
+mv dotfiles dotfiles-bak
+git clone git@github.com:JDonaghy/dotfiles.git
+```
 
-## Fonts
+## Miscellaneous
+### Nerd Fonts
 Source: https://gist.github.com/matthewjberger/7dd7e079f282f8138a9dc3b045ebefa0#file-instructions-md
 
 - Download a [Nerd Font](http://nerdfonts.com/)
@@ -57,18 +75,4 @@ unzip DroidSansMono.zip -d ~/.fonts
 fc-cache -fv
 ```
 
-
-## Zshrc
-```
-# zodide
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-
-# zsh-autosuggestions via oh-my-zsh
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-
-# powerlevel10k via oh-my-zsh
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-ln -s ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k ${HOME}/powerlevel10k
-
-```
 
