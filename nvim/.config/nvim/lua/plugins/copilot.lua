@@ -14,9 +14,10 @@ return {
     },
     build = "make tiktoken",
     config = function()
-      require("CopilotChat").setup({
+      CopilotChat = require("CopilotChat")
+      CopilotChat.setup({
         model = 'gpt-4.1',
-        temperature = 0.1,           -- Lower = focused, higher = creative
+        temperature = 0.1, -- Lower = focused, higher = creative
 
         window = {
           layout   = "float",

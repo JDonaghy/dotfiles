@@ -3,5 +3,4 @@
 
 require('config')
 require('lsp')
-require('plugins')
-
+-- require('plugins')

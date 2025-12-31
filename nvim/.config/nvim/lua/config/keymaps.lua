@@ -1,3 +1,4 @@
+vim.g.mapleader = ' '
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostics' })
@@ -28,10 +29,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set({ "n", "v", "i" }, "<C-S>", "<C-c>:update<cr>", { silent = true, desc = "Save" })
 
 -- Yanky keymaps
-vim.keymap.set({"n","x"}, "p", "<Plug>(YankyPutAfter)")
-vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
-vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
-vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
+vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
+vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
 
 vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
 vim.keymap.set("n", "<c-n>", "<Plug>(YankyNextEntry)")
@@ -47,7 +48,8 @@ vim.keymap.set('n', '<leader>db', ':lua require("dap").toggle_breakpoint()<CR>')
 vim.keymap.set('n', '<leader>dB', ':lua require("dap").set_breakpoint(vim.fn.input("Breakpoint Condition: "))<CR>')
 vim.keymap.set('n', '<leader>dd', ':lua require("dap").continue()<CR>')
 vim.keymap.set('n', '<leader>do', ':lua require("dap").step_over()<CR>')
-vim.keymap.set('n', '<leader>di', ':lua require("dap").step_ito()<CR>')
-
+vim.keymap.set('n', '<leader>di', ':lua require("dap").step_into()<CR>')
+vim.keymap.set('n', '<leader>du', ':lua require("dapui").toggle()<CR>')
+vim.keymap.set('n', '<Leader>dd', ':lua require("dap").disconnect({ terminateDebuggee = false })<CR>')
 -- Python VirtualEnv keymaps
 vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select VirtualEnv" })

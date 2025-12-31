@@ -1,10 +1,19 @@
 return {
-  { 'Hoffs/omnisharp-extended-lsp.nvim' },
-  { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
   { 'Issafalcon/lsp-overloads.nvim' },
   {
+    'mason-org/mason.nvim',
+    config = function()
+      require("mason").setup({
+        registries = {
+          "github:mason-org/mason-registry",
+          "github:Crashdummyy/mason-registry",
+        },
+      })
+    end
+  },
+  {
     "folke/lazydev.nvim",
-    ft = "lua", -- only load on lua files
+    ft = "lua",   -- only load on lua files
     opts = {
       library = {
         -- See the configuration section for more details
@@ -19,8 +28,8 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'mason-org/mason.nvim', opts = {} },
-      { 'mason-org/mason-lspconfig.nvim',
+      {
+        'mason-org/mason-lspconfig.nvim',
         dependencies = { 'neovim/nvim-lspconfig' },
         opts = {}
       },

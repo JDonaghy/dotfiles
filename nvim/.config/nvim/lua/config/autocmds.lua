@@ -1,4 +1,4 @@
--- [[ Autocmds ]]
+-- [[ Autocmds ]]lspconfig
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Terminal keymaps setup
 function _G.set_terminal_keymaps()
-  local opts = {buffer = 0}
+  local opts = { buffer = 0 }
   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
   vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
   vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
@@ -58,3 +58,4 @@ vim.filetype.add({
     biceparams = 'bicep',
   }
 })
+
