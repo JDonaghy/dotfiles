@@ -84,9 +84,15 @@ export ZSH="$HOME/.oh-my-zsh"
 # Add wisely, as too many plugins slow down shell startup.
 #
 
-plugins=(git
-	zsh-autosuggestions
+if [[ -f "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]]; then
+  plugins=(git
+        zsh-autosuggestions
         kube-ps1)
+else
+  plugins=(git
+        kube-ps1)
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -171,8 +177,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+if [[ -f $HOME/powerlevel10k/powerlevel10k.zsh-theme ]]; then
+  source $HOME/powerlevel10k/powerlevel10k.zsh-theme
+fi 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="$HOME/.rd/bin:$PATH"

@@ -24,9 +24,10 @@ cd $HOME/src/dotfiles
 Note that this should work on regular Linux as well provided the requirements are met.
 ### Requirements
 The following need to be pre-installed on the system. 
-- [Distrobox](https://distrobox.it)
+- [Distrobox](https://distrobox.it) (`rpm-ostree install distrobox`)
 - [Homebrew on linux](https://docs.brew.sh/Homebrew-on-Linux)
 - [Podman](https://podman.io/)
+- ZShell (`rpm-ostree install zsh`)
 
 ### rpm-ostree
 For missing packages that can't be installed via Flatpak or Homebrew in Fedora Silverblue, Kinoite etc. E.g.
