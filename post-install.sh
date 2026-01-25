@@ -22,7 +22,8 @@ sudo apt install -y \
   zsh \
   libxss1 \
   cpu-checker \
-  unzip
+  unzip \
+  stow
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
@@ -35,21 +36,19 @@ fi
 if [ 0 = `which dotnet | wc -l` ]; then
   sudo apt install -y dotnet8 
   dotnet tool install --global dotnet-script
-  wget https://github.com/Samsung/netcoredbg/releases/download/3.1.2-1054/netcoredbg-linux-amd64.tar.gz
+  rm -rf netcoredbg*.gz
+  wget https://github.com/Samsung/netcoredbg/releases/download/3.1.3-1062/netcoredbg-linux-amd64.tar.gz
   tar -xvf netcoredbg-linux-amd64.tar.gz
   chmod u+x netcoredbg/netcoredbg
-  mv netcoredbg/* $HOME/.local/bin
-  rmdir netcoredbg
-  
   mkdir -p $HOME/.local/bin
   mv netcoredbg/* $HOME/.local/bin
-
+  rm -rf netcoredbg*
 fi
 
 # TODO: For monitor not working after resume bug 
 # https://askubuntu.com/questions/1333688/how-to-get-external-monitor-to-reconnect-after-sleep-or-power-off/1427781#1427781
 pushd $HOME
-rm -rf .bash_profile .bash_logout .bashrc .zprofile .zshrc .tmux .p10k.zsh .config/nvim Bre
+rm -rf .bash_profile .bash_logout .bashrc .zprofile .zshrc .tmux.conf .p10k.zsh .config/nvim Brewfile
 pushd src/dotfiles
 stow -t ~ nvim
 stow -t ~ bash
@@ -60,12 +59,27 @@ stow -t ~ powerlevel10k
 popd
 popd
 
-brew bundle install
+brew bundle install --file $HOME/Brewfile
 
 rm -rf ~/.oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+pushd /tmp
+curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+sh ./install.sh --unattended
+rm ./install.sh
+popd
+
 mkdir ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ln -s ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k ${HOME}/powerlevel10k
 curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+
+if [ 0 = `which google-chrome | wc -l` ]; then
+  pushd $HOME/downloads
+  rm google-chrome*.deb
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  sudo apt install -y ./google-chrome-stable_current_amd64.deb
+  rm ./google-chrome-stable_current_amd64.deb
+  popd
+fi

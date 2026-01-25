@@ -192,3 +192,4 @@ if [[ -f "/usr/local/share/ca-certificates/ZscalerRootCA.crt" ]]; then
 fi
 
 export COLORTERM=truecolor
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

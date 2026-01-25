@@ -1,5 +1,4 @@
 tap "derailed/k9s"
-tap "jandedobbeleer/oh-my-posh"
 # Extremely Fast Compression algorithm
 brew "lz4"
 # General-purpose data compression with high compression ratio
@@ -80,13 +79,7 @@ brew "tree-sitter-cli"
 brew "unibilium"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Prompt theme engine for any shell
-brew "oh-my-posh"
 # Theme for zsh
 brew "powerlevel10k"
 # Real-time type-ahead completion for Zsh
 brew "zsh-autocomplete"
-# Organize software neatly under a single directory tree (e.g. /usr/local)
-brew "stow"
-# Manage multiple Node.js versions
-brew "nvm"
