@@ -1,3 +1,4 @@
+#!/bin/bash
 mkdir -p $HOME/src
 cd $HOME/src
 
@@ -38,8 +39,19 @@ COUNT=$(echo "$TEMP_CONF" | grep "custom-list" | grep -oP "'\Kcustom\d+" | wc -l
 IDX1="custom$COUNT"
 IDX2="custom$((COUNT + 1))"
 
-sed -i "s|custom-list=\[\(.*\)\]|custom-list=\[\1, '$IDX1', '$IDX2'\]|" "$TEMP_CONF"
-sed -i "s/\[, /\[/g" "$TEMP_CONF"
+if grep -q "custom-list=" "$TEMP_CONF"; then
+    sed -i "s|custom-list=\[\(.*\)\]|custom-list=\[\1, '$IDX1', '$IDX2'\]|" "$TEMP_CONF"
+    sed -i "s/\[, /\[/g" "$TEMP_CONF"
+else
+    {
+      echo "[/]"
+      echo ""
+      echo "custom-list=['$IDX1', '$IDX2']"
+      echo ""
+      cat "$TEMP_CONF"
+    } > "${TEMP_CONF}.new"
+    mv "${TEMP_CONF}.new" "$TEMP_CONF"
+fi
 
 cat <<EOF >> "$TEMP_CONF"
 
