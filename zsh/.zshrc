@@ -193,3 +193,6 @@ fi
 
 export COLORTERM=truecolor
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# opencode
+export PATH=$HOME/.opencode/bin:$PATH
