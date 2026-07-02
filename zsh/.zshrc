@@ -5,6 +5,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Heal a missing DISPLAY (empty inside tmux panes, or when SSH'd in without
+# X-forwarding) so X clients like xclip/xsel and arboard can reach the local
+# display — otherwise terminal copy-to-clipboard silently fails. Fill ONLY when
+# unset: ssh -X always sets a non-empty DISPLAY (localhost:10.0), so forwarding
+# is preserved untouched; a plain ssh leaves it empty and gets :0 (the box's
+# physical display, which is what we want for its local clipboard).
+export DISPLAY="${DISPLAY:-:0}"
+
 [[ -r ~/zsh/zsh-snap/znap.zsh ]] ||
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git ~/zsh/zsh-snap/znap.zsh

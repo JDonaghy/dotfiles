@@ -10,6 +10,14 @@ esac
 
 source ~/.bash-powerline.sh
 
+# Heal a missing DISPLAY (empty inside tmux panes, or when SSH'd in without
+# X-forwarding) so X clients like xclip/xsel and arboard can reach the local
+# display — otherwise terminal copy-to-clipboard silently fails. Fill ONLY when
+# unset: ssh -X always sets a non-empty DISPLAY (localhost:10.0), so forwarding
+# is preserved untouched; a plain ssh leaves it empty and gets :0 (the box's
+# physical display, which is what we want for its local clipboard).
+export DISPLAY="${DISPLAY:-:0}"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
